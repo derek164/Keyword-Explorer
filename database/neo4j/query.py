@@ -1,12 +1,5 @@
 class Query:
-    def format_output(query):
-        def wrap(tx, **kwargs):
-            return [dict(record) for record in tx.run(query(**kwargs), **kwargs)]
-
-        return wrap
-
     @staticmethod
-    @format_output
     def get_university_faculty(institute):
         return """
         MATCH (f:FACULTY)-[:AFFILIATION_WITH]->(i:INSTITUTE)

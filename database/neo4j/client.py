@@ -1,5 +1,6 @@
 from neo4j import GraphDatabase
 from database.neo4j.query import Query
+
 # from query import Query
 
 
@@ -24,8 +25,14 @@ class Client(Query):
         return GraphDatabase.driver(uri=uri, auth=(user, password))
 
     def execute_read(self, query, **kwargs):
+        def format_output(query):
+            def wrap(tx, **kwargs):
+                return [dict(record) for record in tx.run(query(**kwargs), **kwargs)]
+
+            return wrap
+
         with self.driver.session(database=self.database) as session:
-            return session.execute_read(query, **kwargs)
+            return session.execute_read(format_output(query), **kwargs)
 
 
 if __name__ == "__main__":
