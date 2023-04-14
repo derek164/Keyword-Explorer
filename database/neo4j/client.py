@@ -41,3 +41,5 @@ if __name__ == "__main__":
         query=neo4j.get_university_faculty, institute="University of illinois"
     )
     print(result)
+    result = neo4j.execute_read(query=neo4j.get_similar_keywords, keyword="internet")
+    print(result)
