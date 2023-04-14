@@ -43,7 +43,7 @@ class Client(Query):
         )
 
     def project_if_not_exists(self, graph_name, configuration: dict):
-        if not gds.exists(graph_name):
+        if not self.exists(graph_name):
             print(f"PROJECTING {graph_name}")
             return self.project(graph_name, **configuration)
 

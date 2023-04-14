@@ -1,3 +1,4 @@
+import time
 import database as db
 
 
@@ -19,6 +20,17 @@ result = neo4j.execute_read(
 )
 print(result)
 
+
+gds = db.gds.Client(database="academicworld")
+gds.project_if_not_exists(
+    "keyword-label-pub",
+    {
+        "nodes": ["PUBLICATION", "KEYWORD"],
+        "relationships": {
+            "LABEL_BY": {"properties": "score", "orientation": "REVERSE"}
+        },
+    },
+)
 result = neo4j.execute_read(
     query=neo4j.get_similar_keywords, keyword="internet"
 )
