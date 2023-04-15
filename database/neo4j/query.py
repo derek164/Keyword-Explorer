@@ -31,24 +31,40 @@ class Query:
         """
 
     @staticmethod
-    def get_most_relevant_universities(keyword):
+    def get_most_relevant_universities(keyword, start_year, end_year):
         return """
         MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
         WHERE k.name = $keyword
+            AND p.year >= $start_year
+            AND p.year <= $end_year
         WITH i.name AS institute, p.numCitations * l.score AS KRC
-        RETURN institute, sum(KRC) AS AGG_KRC
-        ORDER BY AGG_KRC DESC
+        RETURN institute, sum(KRC) AS KRC
+        ORDER BY KRC DESC
         LIMIT 10
         """
-
+    
     @staticmethod
-    def get_most_relevant_faculty_at_university(university, keyword):
+    def get_university_publications(university, keyword):
         return """
         MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
-        WHERE i.name = $university AND k.name = $keyword
+        WHERE k.name = $keyword
+            AND i.name = $university
+        WITH p.title AS title, p.year AS year, p.numCitations * l.score AS KRC
+        RETURN title, year, sum(KRC) AS KRC
+        ORDER BY KRC DESC
+        LIMIT 10
+        """
+    
+    @staticmethod
+    def get_most_relevant_faculty(keyword, start_year, end_year):
+        return """
+        MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
+        WHERE k.name = $keyword
+            AND p.year >= $start_year
+            AND p.year <= $end_year
         WITH f.name AS faculty, p.numCitations * l.score AS KRC
-        RETURN faculty, sum(KRC) AS AGG_KRC
-        ORDER BY AGG_KRC DESC
+        RETURN faculty, sum(KRC) AS KRC
+        ORDER BY KRC DESC
         LIMIT 10
         """
 
