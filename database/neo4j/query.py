@@ -30,6 +30,28 @@ class Query:
         ORDER BY similarity DESCENDING
         """
 
+    @staticmethod
+    def get_most_relevant_universities(keyword):
+        return """
+        MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
+        WHERE k.name = $keyword
+        WITH i.name AS institute, p.numCitations * l.score AS KRC
+        RETURN institute, sum(KRC) AS AGG_KRC
+        ORDER BY AGG_KRC DESC
+        LIMIT 10
+        """
+
+    @staticmethod
+    def get_most_relevant_faculty_at_university(university, keyword):
+        return """
+        MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
+        WHERE i.name = $university AND k.name = $keyword
+        WITH f.name AS faculty, p.numCitations * l.score AS KRC
+        RETURN faculty, sum(KRC) AS AGG_KRC
+        ORDER BY AGG_KRC DESC
+        LIMIT 10
+        """
+
 
 """ TESTING
 # Project Reverse :LABEL_BY Graph
