@@ -23,7 +23,7 @@ class Client(Query):
             charset="utf8mb4",
         )
 
-    def execute_read(self, query, tuple=()):
+    def execute(self, query, tuple=()):
         with self.database.cursor(prepared=True) as cursor:
             cursor.execute(query(), tuple)
             results = [dict(zip(cursor.column_names, row)) for row in cursor.fetchall()]
@@ -33,7 +33,7 @@ class Client(Query):
 
 if __name__ == "__main__":
     prepared = Client(database="academicworld")
-    result = prepared.execute_read(
+    result = prepared.execute(
         query=prepared.get_university_faculty,
         tuple=("University of illinois at Urbana Champaign",),
     )

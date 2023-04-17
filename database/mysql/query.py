@@ -43,3 +43,9 @@ class Query:
         ORDER BY KRC DESC
         LIMIT 10;
         """
+    
+    @staticmethod
+    def get_keywords():
+        return """
+        SELECT name FROM keyword;
+        """

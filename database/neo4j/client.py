@@ -24,7 +24,7 @@ class Client(Query):
         )
         return GraphDatabase.driver(uri=uri, auth=(user, password))
 
-    def execute_read(self, query, **kwargs):
+    def execute(self, query, **kwargs):
         def format_output(query):
             def wrap(tx, **kwargs):
                 return [dict(record) for record in tx.run(query(**kwargs), **kwargs)]
@@ -32,14 +32,14 @@ class Client(Query):
             return wrap
 
         with self.driver.session(database=self.database) as session:
-            return session.execute_read(format_output(query), **kwargs)
+            return session.execute(format_output(query), **kwargs)
 
 
 if __name__ == "__main__":
     neo4j = Client(database="academicworld")
-    result = neo4j.execute_read(
+    result = neo4j.execute(
         query=neo4j.get_university_faculty, institute="University of illinois"
     )
     print(result)
-    result = neo4j.execute_read(query=neo4j.get_similar_keywords, keyword="internet")
+    result = neo4j.execute(query=neo4j.get_similar_keywords, keyword="internet")
     print(result)

@@ -24,7 +24,7 @@ class Client(Query):
             cursorclass=pymysql.cursors.DictCursor,
         )
 
-    def execute_read(self, query, **kwargs):
+    def execute(self, query, **kwargs):
         with self.database.cursor() as cursor:
             cursor.execute(query(**kwargs))
             return cursor.fetchall()
@@ -32,7 +32,7 @@ class Client(Query):
 
 if __name__ == "__main__":
     mysql = Client(database="academicworld")
-    result = mysql.execute_read(
+    result = mysql.execute(
         query=mysql.get_university, institute="University of illinois"
     )
     print(result)

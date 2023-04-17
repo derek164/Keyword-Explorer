@@ -16,12 +16,12 @@ class Client(Query):
         host, port = "localhost", 27017
         self._database = MongoClient(host, port)[database]
 
-    def execute_read(self, query, **kwargs):
+    def execute(self, query, **kwargs):
         return query(database=self.database, **kwargs)
     
 if __name__ == "__main__":
     mongo = Client(database="academicworld")
-    result = mongo.execute_read(
+    result = mongo.execute(
         query=mongo.get_university_faculty, institute="University of illinois"
     )
     print(result)
