@@ -1,21 +1,25 @@
 import database as db
 
 
+gds = db.gds.Client(database="academicworld")
 mysql = db.mysql.Client(database="academicworld")
+mongo = db.mongo.Client(database="academicworld")
+neo4j = db.neo4j.Client(database="academicworld")
+prepared = db.prepared.Client(database="academicworld")
+
+
 result = mysql.execute_read(
     query=mysql.get_university_faculty, institute="University of illinois"
 )
 print("\n[test] mysql.get_university_faculty")
 print(result)
 
-mongo = db.mongo.Client(database="academicworld")
 result = mongo.execute_read(
     query=mongo.get_university_faculty, institute="University of illinois"
 )
 print("\n[test] mongo.get_university_faculty")
 print(result)
 
-neo4j = db.neo4j.Client(database="academicworld")
 result = neo4j.execute_read(
     query=neo4j.get_university_faculty, institute="University of illinois"
 )
@@ -83,7 +87,6 @@ result = mongo.execute_read(
 print("\n[4] mongo.get_citations_and_relevance_by_year")
 print(result)
 
-gds = db.gds.Client(database="academicworld")
 gds.project_if_not_exists(
     "keyword-label-pub",
     {
@@ -96,3 +99,33 @@ gds.project_if_not_exists(
 result = neo4j.execute_read(query=neo4j.get_similar_keywords, keyword="internet")
 print("\n[2] neo4j.get_similar_keywords")
 print(result)
+
+result = prepared.execute_read(
+    query=prepared.create_favorites_table
+)
+print("\n[test] prepared.create_favorites_table")
+print(result)
+
+result = prepared.execute_read(
+    query=prepared.remove_favorite,
+    tuple=("IoT Data Prefetching in Indoor Navigation SOAs",),
+)
+print("\n[test] prepared.remove_favorite")
+print(result)
+
+result = prepared.execute_read(
+    query=prepared.insert_favorite,
+    tuple=("IoT Data Prefetching in Indoor Navigation SOAs",),
+)
+print("\n[test] prepared.insert_favorite")
+print(result)
+
+result = prepared.execute_read(query=prepared.get_favorites)
+print("\n[test] prepared.get_favorites")
+print(result)
+
+# result = prepared.execute_read(
+#     query=prepared.drop_favorites_table
+# )
+# print("\n[test] prepared.drop_favorites_table")
+# print(result)
