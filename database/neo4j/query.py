@@ -69,6 +69,20 @@ class Query:
         ORDER BY KRC DESC
         LIMIT 10
         """
+    
+    @staticmethod
+    def get_faculty_publications(faculty, keyword, start_year, end_year):
+        return """
+        MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
+        WHERE k.name = $keyword
+            AND f.name = $faculty
+            AND p.year >= $start_year
+            AND p.year <= $end_year
+        WITH p.title AS title, p.year AS year, p.numCitations * l.score AS KRC
+        RETURN title, year, sum(KRC) AS KRC
+        ORDER BY KRC DESC
+        LIMIT 10
+        """
 
 
 """ TESTING

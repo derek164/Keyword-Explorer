@@ -15,7 +15,17 @@ body {
     font-size: 48px;
     font-weight: bold;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 
+    auto;
+}
+
+.header-3 {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 
+    auto;
 }
 
 .header-description {
@@ -89,7 +99,7 @@ body {
   }
 
 .menu {
-    height: 112px;
+    height: 100px;
     width: 912px;
     display: flex;
     justify-content: space-evenly;
@@ -97,6 +107,26 @@ body {
     margin: -80px auto 0 auto;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.summary {
+    height: 20px;
+    width: 912px;
+    display: flex;
+    max-height: 40px;
+    justify-content: space-evenly;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 0px auto 0 auto;
+    background-color: #FFFFFF;
+    border-top: 2px solid #37887a95;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.recommendations {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .menu-title {
@@ -118,6 +148,7 @@ body {
 .Select--single>.Select-control .Select-value,
 .Select-placeholder {
     line-height: 48px;
+    font-weight: 900;
 }
 
 .Select--multi .Select-value-label {
