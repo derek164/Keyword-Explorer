@@ -8,9 +8,15 @@ venv/touchfile: requirements.txt
 	@. venv/bin/activate; pip install --upgrade pip; pip install -Ur requirements.txt
 	@touch venv/touchfile
 
+freeze:
+	@pip freeze > requirements.txt
+
 env:
 	@python3 -m venv venv
 	@. venv/bin/activate; pip install --upgrade pip; pip install -Ur requirements.txt
 
-run:
+test:
 	@. venv/bin/activate; python3 main.py
+
+app:
+	@. venv/bin/activate; python3 app.py

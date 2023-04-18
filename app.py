@@ -8,13 +8,6 @@ from dash import Dash, Input, Output, State, dcc, html, MATCH, ALL
 
 # from dash import dash_table
 
-"""
-https://img.icons8.com/material/24/045241/hand-drawn-star.png
-https://img.icons8.com/material/24/759c93/hand-drawn-star.png
-https://img.icons8.com/material-outlined/24/045241/hand-drawn-star.png
-https://img.icons8.com/material-outlined/24/759c93/hand-drawn-star.png
-"""
-
 gds = db.gds.Client(database="academicworld")
 mysql = db.mysql.Client(database="academicworld")
 mongo = db.mongo.Client(database="academicworld")
@@ -103,7 +96,13 @@ def generate_publication_list(publications):
     return [
         html.Div(
             children=[
-                html.A(publication, href=requote_uri(f'https://scholar.google.com/scholar?hl=en&q="{publication}"'), target="_blank"),
+                html.A(
+                    publication,
+                    href=requote_uri(
+                        f'https://scholar.google.com/scholar?hl=en&q="{publication}"'
+                    ),
+                    target="_blank",
+                ),
                 # publication,
                 html.Button(
                     id={"type": "publication-elem-button", "index": publication},
@@ -149,8 +148,8 @@ app.layout = html.Div(
                 html.H1(children="Keyword Explorer", className="header-title"),
                 html.P(
                     children=(
-                        "Learn about the who, what, and when of keywords "
-                        "and save interesting publications to check out later!"
+                        "Learn about the who, what, and when of the academic world "
+                        "and save interesting publications for later!"
                     ),
                     className="header-description",
                 ),
@@ -189,7 +188,7 @@ app.layout = html.Div(
                                 "font-size": "4px",
                                 "display": "inline-block",
                                 "border-collapse": "separate",
-                            }
+                            },
                         ),
                     ]
                 ),
