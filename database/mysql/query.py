@@ -49,3 +49,9 @@ class Query:
         return """
         SELECT name FROM keyword;
         """
+    
+    @staticmethod
+    def get_favorites():
+        return """
+        SELECT * FROM favorites;
+        """

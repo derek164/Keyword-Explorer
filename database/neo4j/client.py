@@ -32,7 +32,7 @@ class Client(Query):
             return wrap
 
         with self.driver.session(database=self.database) as session:
-            return session.execute(format_output(query), **kwargs)
+            return session.execute_read(format_output(query), **kwargs)
 
 
 if __name__ == "__main__":

@@ -21,11 +21,11 @@ class Client(Query):
             password="test_root",
             database=database,
             charset="utf8mb4",
-            cursorclass=pymysql.cursors.DictCursor,
+            # cursorclass=pymysql.cursors.DictCursor,
         )
 
     def execute(self, query, **kwargs):
-        with self.database.cursor() as cursor:
+        with self.database.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
             cursor.execute(query(**kwargs))
             return cursor.fetchall()
 

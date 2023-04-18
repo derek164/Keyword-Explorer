@@ -113,9 +113,16 @@ result = prepared.execute(
 print("\n[test] prepared.remove_favorite")
 print(result)
 
+# result = prepared.execute(
+#     query=prepared.insert_favorite,
+#     tuple=("IoT Data Prefetching in Indoor Navigation SOAs",),
+# )
+# print("\n[test] prepared.insert_favorite")
+# print(result)
+
 result = prepared.execute(
     query=prepared.insert_favorite,
-    tuple=("IoT Data Prefetching in Indoor Navigation SOAs",),
+    tuple=("An Internet-wide view of ICS devices",),
 )
 print("\n[test] prepared.insert_favorite")
 print(result)

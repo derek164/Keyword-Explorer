@@ -39,6 +39,55 @@ body {
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
 }
 
+.publications-tab {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1024px;
+    max-height: 380px;
+    margin-top: 32px;
+    /* margin-bottom: 32px; */
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+    overflow-y:auto;
+}
+
+.publications-card {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1024px;
+    max-height: 380px;
+    min-height: 380px;
+    margin-top: 1px;
+    margin-bottom: 32px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+    overflow-y:auto;
+}
+
+.publication-elem {
+    border-radius: 2px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+    padding: 15px 32px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+}
+
+.publication-elem-button:hover {
+    opacity: 0.6;
+    background-image: url('https://img.icons8.com/material/24/045241/hand-drawn-star.png');
+    background-size: 20px 20px;
+    background-repeat: repeat-x;
+}
+
+.publication-elem-button {
+    background-size: 20px 20px;
+    background-repeat: repeat-x;
+    background-color: rgb(255, 255, 255);
+    padding: 0px 0px;
+    border: none;
+  }
+
 .menu {
     height: 112px;
     width: 912px;
@@ -48,6 +97,17 @@ body {
     margin: -80px auto 0 auto;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.menu-title {
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #079A82;
+}
+
+.tab-title {
+    font-weight: 500;
+    color: #079A82;
 }
 
 .Select-control {
@@ -62,10 +122,4 @@ body {
 
 .Select--multi .Select-value-label {
     line-height: 32px;
-}
-
-.menu-title {
-    margin-bottom: 6px;
-    font-weight: bold;
-    color: #079A82;
 }
