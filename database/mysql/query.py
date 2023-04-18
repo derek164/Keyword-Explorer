@@ -12,7 +12,7 @@ class Query:
         """
     
     @staticmethod
-    def get_faculty_publications(faculty, keyword):
+    def get_faculty_publications(faculty, keyword, start_year, end_year):
         return f"""
         SELECT publication.title
             , publication.year
@@ -24,6 +24,8 @@ class Query:
         JOIN keyword ON keyword.id = publication_keyword.keyword_id
         WHERE keyword.name = "{keyword}" 
             AND faculty.name LIKE "{faculty}"
+            AND publication.year >= {start_year}
+            AND publication.year <= {end_year}
         ORDER BY KRC DESC
         LIMIT 10;
         """
@@ -47,7 +49,7 @@ class Query:
     @staticmethod
     def get_keywords():
         return """
-        SELECT name FROM keyword;
+        SELECT name FROM keyword ORDER BY name;
         """
     
     @staticmethod

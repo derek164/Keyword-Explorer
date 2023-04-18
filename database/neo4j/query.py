@@ -44,11 +44,13 @@ class Query:
         """
     
     @staticmethod
-    def get_university_publications(university, keyword):
+    def get_university_publications(university, keyword, start_year, end_year):
         return """
         MATCH (i:INSTITUTE)<-[:AFFILIATION_WITH]-(f:FACULTY)-[:PUBLISH]->(p:PUBLICATION)-[l:LABEL_BY]->(k:KEYWORD)
         WHERE k.name = $keyword
             AND i.name = $university
+            AND p.year >= $start_year
+            AND p.year <= $end_year
         WITH p.title AS title, p.year AS year, p.numCitations * l.score AS KRC
         RETURN title, year, sum(KRC) AS KRC
         ORDER BY KRC DESC

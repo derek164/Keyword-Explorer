@@ -11,8 +11,6 @@ https://img.icons8.com/material/24/045241/hand-drawn-star.png
 https://img.icons8.com/material/24/759c93/hand-drawn-star.png
 https://img.icons8.com/material-outlined/24/045241/hand-drawn-star.png
 https://img.icons8.com/material-outlined/24/759c93/hand-drawn-star.png
-
-['An Internet-wide view of ICS devices', 'IoT Data Prefetching in Indoor Navigation SOAs']
 """
 
 gds = db.gds.Client(database="academicworld")
@@ -22,7 +20,7 @@ neo4j = db.neo4j.Client(database="academicworld")
 prepared = db.prepared.Client(database="academicworld")
 
 
-keywords = pd.DataFrame(mysql.execute(query=mysql.get_keywords))["name"].sort_values()
+keywords = [keyword["name"] for keyword in mysql.execute(query=mysql.get_keywords)]
 
 
 def get_most_relevant_publications(**kwargs):
@@ -39,6 +37,15 @@ def get_most_relevant_university(**kwargs):
         institute["institute"]
         for institute in neo4j.execute(
             query=neo4j.get_most_relevant_universities, **kwargs
+        )
+    ]
+
+
+def get_most_relevant_university_publications(**kwargs):
+    return [
+        publication["title"]
+        for publication in neo4j.execute(
+            query=neo4j.get_university_publications, **kwargs
         )
     ]
 
@@ -93,8 +100,14 @@ external_stylesheets = [
         "rel": "stylesheet",
     },
 ]
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(
+    __name__,
+    external_stylesheets=external_stylesheets,
+    # suppress_callback_exceptions=True,
+)
 app.title = "Keyword Explorer"
+# https://stackoverflow.com/questions/59568510/dash-suppress-callback-exceptions-not-working
+app.config.suppress_callback_exceptions=True
 
 app.layout = html.Div(
     children=[
@@ -170,8 +183,8 @@ app.layout = html.Div(
                         },
                     ),
                     dcc.Tab(
-                        label="University",
-                        value="university",
+                        label="Top Universities",
+                        value="top-universities",
                         className="tab-title",
                         selected_style={
                             "font-weight": "900",
@@ -239,7 +252,7 @@ def render_content(tab, keyword, start_date, end_date):
                 )
             )
         )
-    elif tab == "university":
+    elif tab == "top-universities":
         top_universities = get_most_relevant_university(
             keyword=keyword, start_year=start_year, end_year=end_year
         )
@@ -253,10 +266,27 @@ def render_content(tab, keyword, start_date, end_date):
                         for university in top_universities
                     ],
                     value="Stanford University",
+                    # placeholder="Select a university from the rankings",
                     clearable=False,
                     className="dropdown",
-                    style={"min-width": "1024px"}
+                    style={"min-width": "1024px"},
                 ),
+                html.Div(children=[], id="university-publications"),
+                # html.Div(
+                #     children=[
+                #         html.Div(
+                #             children=generate_publication_list(
+                #                 get_most_relevant_university_publications(
+                #                     university=university,
+                #                     keyword=keyword,
+                #                     start_year=start_year,
+                #                     end_year=end_year,
+                #                 )
+                #             )
+                #         )
+                #     ],
+                #     id="university-publications"
+                # ),
             ]
         )
     elif tab == "favorites":
@@ -264,25 +294,27 @@ def render_content(tab, keyword, start_date, end_date):
         return html.Div(children=generate_publication_list(favorites))
 
 
-# @app.callback(
-#     Output("top-publications", "children"),
-#     Input("keyword-filter", "value"),
-#     Input("date-range", "start_date"),
-#     Input("date-range", "end_date"),
-# )
-# def update_top_publications(keyword, start_date, end_date):
-#     start_year = int(start_date[:4])
-#     end_year = int(end_date[:4])
-#     return (
-#         # html.Div(children="Favorites", className="menu-title"),
-#         html.Div(
-#             children=generate_publication_list(
-#                 get_most_relevant_publications(
-#                     keyword=keyword, start_year=start_year, end_year=end_year
-#                 )
-#             )
-#         ),
-#     )
+@app.callback(
+    Output("university-publications", "children"),
+    Input("university-filter", "value"),
+    Input("keyword-filter", "value"),
+    Input("date-range", "start_date"),
+    Input("date-range", "end_date"),
+    # prevent_initial_call=True,
+)
+def update_university_publications(university, keyword, start_date, end_date):
+    start_year = int(start_date[:4])
+    end_year = int(end_date[:4])
+    return html.Div(
+        children=generate_publication_list(
+            get_most_relevant_university_publications(
+                university=university,
+                keyword=keyword,
+                start_year=start_year,
+                end_year=end_year,
+            )
+        )
+    )
 
 
 # html.Div(
@@ -422,4 +454,4 @@ def update_price_chart(keyword, start_date, end_date):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, dev_tools_ui=False)
