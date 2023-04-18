@@ -3,6 +3,7 @@ import database as db
 from itertools import cycle
 import plotly.express as px
 import plotly.graph_objects as go
+from requests.utils import requote_uri
 from dash import Dash, Input, Output, State, dcc, html, MATCH, ALL
 
 # from dash import dash_table
@@ -102,7 +103,8 @@ def generate_publication_list(publications):
     return [
         html.Div(
             children=[
-                publication,
+                html.A(publication, href=requote_uri(f'https://scholar.google.com/scholar?hl=en&q="{publication}"'), target="_blank"),
+                # publication,
                 html.Button(
                     id={"type": "publication-elem-button", "index": publication},
                     children=[
@@ -434,9 +436,9 @@ def update_publication_favorites(n_clicks, id, existing_state):
 def update_price_chart(keyword, start_date, end_date):
     start_year = int(start_date[:4])
     end_year = int(end_date[:4])
-    test = pd.DataFrame(
+    df = pd.DataFrame(
         mongo.execute(
-            query=mongo.get_citations_and_relevance_by_year,
+            query=mongo.get_keywords_trends,
             keyword=keyword,
             start_year=start_year,
             end_year=end_year,
@@ -455,8 +457,8 @@ def update_price_chart(keyword, start_date, end_date):
     }
     fig.add_trace(
         go.Scatter(
-            x=test["year"],
-            y=test["citations"],
+            x=df["year"],
+            y=df["citations"],
             mode="lines+markers",
             name="Citations",
             marker_color=next(palette),
@@ -465,8 +467,18 @@ def update_price_chart(keyword, start_date, end_date):
     )
     fig.add_trace(
         go.Scatter(
-            x=test["year"],
-            y=test["relevance"],
+            x=df["year"],
+            y=df["publications"],
+            mode="lines+markers",
+            name="Publications",
+            marker_color=next(palette),
+            hovertemplate="Publications: %{y:.2f}<extra></extra>",
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=df["year"],
+            y=df["relevance"],
             mode="lines+markers",
             name="Relevant Citations",
             marker_color=next(palette),

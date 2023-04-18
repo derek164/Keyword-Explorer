@@ -4,6 +4,12 @@ body {
     background-color: #F7F7F7;
 }
 
+a {
+    color: rgb(77, 77, 100);
+    text-decoration: none;
+    /* no underline */
+}
+
 .header {
     background-color: #222222;
     height: 200px;
@@ -15,8 +21,7 @@ body {
     font-size: 48px;
     font-weight: bold;
     text-align: center;
-    margin: 0 
-    auto;
+    margin: 0 auto;
 }
 
 .header-3 {
@@ -24,8 +29,7 @@ body {
     font-size: 32px;
     font-weight: bold;
     text-align: center;
-    margin: 0 
-    auto;
+    margin: 0 auto;
 }
 
 .header-description {
@@ -58,7 +62,7 @@ body {
     /* margin-bottom: 32px; */
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 .publications-card {
@@ -71,7 +75,7 @@ body {
     margin-bottom: 32px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 .publication-elem {
@@ -96,7 +100,7 @@ body {
     background-color: rgb(255, 255, 255);
     padding: 0px 0px;
     border: none;
-  }
+}
 
 .menu {
     height: 100px;

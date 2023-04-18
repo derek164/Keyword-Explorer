@@ -132,3 +132,43 @@ class Query:
             {"$sort": {"year": 1}},
         ]
         return list(database.publications.aggregate(pipeline))
+    
+    @staticmethod
+    def get_keywords_trends(database, keyword, start_year, end_year):
+
+        pipeline = [
+            {"$unwind": "$keywords"},
+            {
+                "$match": {
+                    "$and": [
+                        {"keywords.name": keyword},
+                        {"year": {"$gte": start_year}},
+                        {"year": {"$lte": end_year}},
+                    ]
+                }
+            },
+            {
+                "$addFields": {
+                    "KRC": {"$multiply": ["$numCitations", "$keywords.score"]}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$year",
+                    "citations": {"$sum": "$numCitations"},
+                    "relevance": {"$sum": "$KRC"},
+                    "publications": {"$count": {}},
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "year": "$_id",
+                    "citations": "$citations",
+                    "relevance": "$relevance",
+                    "publications": "$publications",
+                }
+            },
+            {"$sort": {"year": 1}},
+        ]
+        return list(database.publications.aggregate(pipeline))
