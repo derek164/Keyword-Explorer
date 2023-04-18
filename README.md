@@ -1,7 +1,6 @@
 # Keyword-Explorer
 
-Learn about the who, what, and when of the academic world and save interesting publications for later! 
-
+Learn about the who, what, and when of the academic world and save interesting publications for later!  
 To get an overview of the applications, please view this demo. (`TODO`)
 
 ## Installation
