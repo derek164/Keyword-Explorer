@@ -57,3 +57,19 @@ class Query:
         return """
         SELECT * FROM favorites;
         """
+
+    @staticmethod
+    def get_faculty_top_scores():
+        return f"""
+        SELECT DISTINCT f.name faculty_name, 
+        k.name keyword_name,
+        score
+        FROM faculty_keyword fk
+        INNER JOIN faculty f
+            ON fk.faculty_id = f.id
+        INNER JOIN keyword k
+            ON fk.keyword_id = k.id
+        ORDER BY score DESC
+        LIMIT 15;
+        """
+        

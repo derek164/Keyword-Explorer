@@ -83,7 +83,14 @@ class Query:
         ORDER BY KRC DESC
         LIMIT 10
         """
-
+    @staticmethod
+    def get_faculty_relations(faculty):
+        return """
+        MATCH (f:FACULTY)-[i:INTERESTED_IN] -> (k:KEYWORD)  
+        WHERE f.name = $faculty
+        RETURN k.name as keyword, f.name as faculty 
+        LIMIT 10
+        """
 
 """ TESTING
 # Project Reverse :LABEL_BY Graph

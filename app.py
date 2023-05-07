@@ -41,7 +41,22 @@ def get_most_relevant_publications(**kwargs):
             query=mysql.get_most_relevant_publications, **kwargs
         )
     ]
+ 
+def get_faculty_top_score(**kwargs):
+    return [
+        faculty["faculty_name"]
+        for faculty in mysql.execute(
+            query=mysql.get_faculty_top_scores, **kwargs
+        )
+    ]  
 
+def get_faculty_relationship(**kwargs):
+    return [
+        faculty["keyword"]
+        for faculty in neo4j.execute(
+            query=neo4j.get_faculty_relations, **kwargs
+        )
+    ]
 
 def get_most_relevant_university(**kwargs):
     return [
@@ -90,7 +105,6 @@ def remove_favorite(title):
     print("Removing favorite: " + title)
     prepared.execute(query=prepared.remove_favorite, tuple=(title,))
 
-
 def generate_publication_list(publications):
     favorites = get_favorites()
     return [
@@ -122,7 +136,6 @@ def generate_publication_list(publications):
         )
         for publication in publications
     ]
-
 
 external_stylesheets = [
     {
@@ -250,6 +263,15 @@ app.layout = html.Div(
                         },
                     ),
                     dcc.Tab(
+                        label="Research Interest",
+                        value="faculty-score",
+                        className="tab-title",
+                        selected_style={
+                            "font-weight": "900",
+                            "color": "#079A82",
+                        },
+                    ),
+                    dcc.Tab(
                         label="Favorites",
                         value="favorites",
                         className="tab-title",
@@ -347,10 +369,42 @@ def render_content(tab, keyword, start_date, end_date):
                 html.Div(children=[], id="researcher-publications"),
             ]
         )
+    elif tab == "faculty-score":
+        faculties = get_faculty_top_score()
+        faculties = list(dict.fromkeys(faculties)) # remove duplicates
+        return html.Div(
+            children=[
+                dcc.Dropdown(
+                    id="faculty-filter",
+                    options=[
+                        {"label": faculty, "value": faculty}
+                        for faculty in faculties
+                    ],
+                    # value="Alan Ford",
+                    placeholder="Select a Faculty",
+                    clearable=False,
+                    className="dropdown",
+                    style={
+                        "min-width": "1024px",
+                        "height": "54px",
+                        "font-weight": "500",
+                    },
+                ),
+                html.Div(children=[], id="faculty-relations"),
+            ]
+        )
     elif tab == "favorites":
         favorites = get_favorites()
         return html.Div(children=generate_publication_list(favorites))
 
+@app.callback(
+    Output("faculty-relations", "children"),
+    Input("faculty-filter", "value"),
+    # prevent_initial_call=True,
+)
+def update_faculty_relations(faculty):
+    return html.Div(children=[html.Li(r) for r in get_faculty_relationship(faculty=faculty)])
+        
 
 @app.callback(
     Output("university-publications", "children"),
