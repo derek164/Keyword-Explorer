@@ -2,7 +2,7 @@
 
 This application is meant for students and researchers to explore their areas of interest. With a given keyword, you can start by inspecting its usage over a given period of time. You can then dive deeper by viewing the top publications and the top contributors to a research area, as well as their bodies of relevant work, over the same period. From here, clicking on a title will open the publication in an online academic journal where you can quickly preview the abstract. If you come across a particularly interesting publication, you can save it for later by adding it to your favorites. While browsing, similar keywords will be recommended to you under the search bar as an avenue for exploration, and all publications will be presented with their associated keywords as well. Last but not least, all keywords have been made clickable to further your experience in learning and exploration! 
 
-
+https://github.com/derek164/Keyword-Explorer/assets/114364731/9ede9829-3712-4c63-8bc6-fc8dcbfd6614
 
 ## Installation
 
