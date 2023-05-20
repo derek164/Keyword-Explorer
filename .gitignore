@@ -1,4 +1,10 @@
-.DS_Store
+# Project-specific
+.vscode
+!src/expansion
+src/expansion/*
+!src/expansion/keywords.txt
+!src/expansion/pub_crossref_urls.jsonl.zip
+*.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
